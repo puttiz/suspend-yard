@@ -1,6 +1,4 @@
 ActionController::Routing::Routes.draw do |map|
-  map.resources :users
-
   map.with_options :controller => 'users' do |user|
     user.signup   'signup',        :action => 'new'
     user.settings 'settings',      :action => 'edit'
