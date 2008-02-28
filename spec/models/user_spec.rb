@@ -1,25 +1,15 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 
-module UserSpecHelper
-  def create_user(options = {})
-    User.create({ :username => 'mimosa',
-                  :nickname => 'mimosa vivi',
-                  :password => 'mimosapass',
-                  :password_confirmation => 'mimosapass',
-                  :email => 'mimosa@example.com',
-                  :biography => 'A nurse with special habilities'
-                }.merge(options))
-  end
-end
-
 describe User, ":: First User" do
 
   include UserSpecHelper
 
   it "should become admin" do
     User.delete_all
-    @user = create_user
-    
+    @user = User.new
+    @user.attributes = valid_user_attributes
+    @user.save
+
     @user.should be_admin
     @user.should be_activated
   end
@@ -27,100 +17,92 @@ describe User, ":: First User" do
 end
 
 describe User, ":: A new user" do
-  
+
   include UserSpecHelper
-  
-  it "should be created" do
+
+  before(:each) do
+    @user = User.new
+  end
+
+  it "should be valid and created" do
     lambda{
-      @user = create_user
+      @user.attributes = valid_user_attributes
+      @user.should be_valid
+
+      @user.save
       @user.should_not be_new_record
     }.should change(User, :count).by(1)
   end
-  
+
   it "should require username" do
-    lambda{
-      @user = create_user(:username => nil)
-      @user.should have_at_least(1).error_on(:username)
-    }.should_not change(User, :count)
+    @user.attributes = valid_user_attributes.except(:username)
+    @user.should have_at_least(1).error_on(:username)
   end
-  
+
   it "should require username between 3 and 20 characters in length" do
 
-    lambda{
-      @user = create_user(:username => 'no')
-      @user.should have_at_least(1).error_on(:username)
-    }.should_not change(User, :count)  
+    @user.attributes = valid_user_attributes.with(:username => 'no')
+    @user.should have_at_least(1).error_on(:username)
 
-    lambda{
-      @user = create_user(:username => 'looooooooooooooooooog')
-      @user.should have_at_least(1).error_on(:username)
-    }.should_not change(User, :count)
+    @user.attributes = valid_user_attributes.with(:username => 'looooooooooooooooooog')
+    @user.should have_at_least(1).error_on(:username)
 
   end
-  
+
   it "should require nickname as username when it's blank" do
-    lambda{
-      @user = create_user(:nickname => nil)
-      @user.should_not be_new_record
-      @user.nickname.should == @user.username
-    }.should change(User, :count).by(1)
+    @user.attributes = valid_user_attributes.except(:nickname)
+    @user.save
+    @user.nickname.should == @user.username
   end
-  
-  it "should require unique username & nickname (case insensitive)" do
-    @user = create_user
-    lambda{
-      @u = create_user(:username => "MiMoSa")
-      @u.should have_at_least(1).errors_on(:username)
-    }.should_not change(User, :count)
-  end
-  
-  it "should require password" do
-    lambda{
-      @user = create_user(:password => nil)
-      @user.should have_at_least(1).error_on(:password)
-    }.should_not change(User, :count)
-  end
-  
-  it "should password confirmation" do
-    lambda{
-      @user = create_user(:password_confirmation => nil)
-      @user.should have_at_least(1).error_on(:password_confirmation)
-    }.should_not change(User, :count)
-  end
-  
-  it "should password between 6 and 12 characters in length" do
-    lambda{
-      @user = create_user(:password => "short", :password_confirmation => "short")
-      @user.should have_at_least(1).errors_on(:password)
-    }.should_not change(User,:count)
 
-    lambda{
-      @user = create_user(:password => "looooooooooog", :password_confirmation => "looooooooooog")
-      @user.should have_at_least(1).errors_on(:password)
-    }.should_not change(User,:count)
+  it "should require unique username & nickname (case insensitive)" do
+    @user.attributes = valid_user_attributes
+    @user.save
+
+    @u = User.new
+    @u.attributes = valid_user_attributes.with(:username => "MiMoSa")
+    @u.should have_at_least(1).errors_on(:username)
   end
-  
+
+  it "should require password" do
+    @user.attributes = valid_user_attributes.except(:password)
+    @user.should have_at_least(1).error_on(:password)
+  end
+
+  it "should password confirmation" do
+    @user.attributes = valid_user_attributes.except(:password_confirmation)
+    @user.should have_at_least(1).error_on(:password_confirmation)
+  end
+
+  it "should password between 6 and 12 characters in length" do
+    @user.attributes = valid_user_attributes.with(:password => "short", :password_confirmation => "short")
+    @user.should have_at_least(1).errors_on(:password)
+
+    @user.attributes = valid_user_attributes.with(:password => "looooooooooog", :password_confirmation => "looooooooooog")
+    @user.should have_at_least(1).errors_on(:password)
+  end
+
   it "should require email" do
-    lambda{
-      @user = create_user(:email => nil)
-      @user.should have_at_least(1).errors_on(:email)
-    }.should_not change(User, :count)
+    @user.attributes = valid_user_attributes.except(:email)
+    @user.should have_at_least(1).errors_on(:email)
   end
-  
+
   it "should require correct email" do
-    lambda{
-      @user = create_user(:email => 'mm')
-      @user.should have_at_least(1).errors_on(:email)
-    }.should_not change(User, :count)
+    @user.attributes = valid_user_attributes.with(:email => 'mm')
+    @user.should have_at_least(1).errors_on(:email)
   end
-  
+
   it "should not be activated and be an admin" do
-    @user = create_user
-    
+    lambda{
+      @user.attributes = valid_user_attributes.with(:username => 'testman', :password => 'password', :password_confirmation => 'password', :email => 'need@need.com' )
+      @user.should be_valid
+      @user.save
+    }.should change(User, :count).by(1)
+
     @user.should_not be_admin
     @user.should_not be_activated
   end
-  
+
 end
 
 describe User, ":: User with fixtures loaded" do
