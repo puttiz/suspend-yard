@@ -1,10 +1,4 @@
 ActionController::Routing::Routes.draw do |map|
-  map.with_options :controller => 'users' do |user|
-    user.signup   'signup',        :action => 'new'
-    user.settings 'settings',      :action => 'edit'
-    user.activate 'activate',      :action => 'activate'
-  end
-
   # The priority is based upon order of creation: first created -> highest priority.
 
   # Sample of regular route:
