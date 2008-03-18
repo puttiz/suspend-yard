@@ -2,8 +2,6 @@ class <%= migration_name %> < ActiveRecord::Migration
   def self.up
     create_table :<%= table_name %> do |t|
 <% for attribute in attributes -%>
-      # Sexy Migrations
-      # t.type :name
       t.<%= attribute.type %> :<%= attribute.name %>
 <% end -%>
 <% unless options[:skip_timestamps] %>

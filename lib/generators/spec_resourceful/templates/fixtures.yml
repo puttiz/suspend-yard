@@ -1,6 +1,6 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
-<% unless attributes.empty? ->
+<% unless attributes.empty? -%>
 one:
 <% for attribute in attributes -%>
   <%= attribute.name %>: <%= attribute.default %>
@@ -10,9 +10,10 @@ two:
 <% for attribute in attributes -%>
   <%= attribute.name %>: <%= attribute.default %>
 <% end -%>
+<% else -%>
 # one:
 #   column: value
 #
 # two:
-#   column; value
+#   column: value
 <% end -%>

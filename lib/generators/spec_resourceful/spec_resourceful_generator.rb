@@ -46,12 +46,12 @@ class SpecResourcefulGenerator < Rails::Generator::NamedBase
       m.directory(File.join('app/views', controller_class_path, controller_file_name))
       m.directory(File.join('spec/views', controller_class_path, controller_file_name))
 
-      # Model class, spec test, and fixtures.
+      # Model class, model spec, and fixtures.
       m.template 'model.rb', File.join('app/models', class_path, "#{file_name}.rb")
       m.template 'model_spec.rb', File.join('spec/models', class_path, "#{file_name}_spec.rb")
 
       unless options[:skip_fixture]
-        m.template 'fixtures.yml', File.join('spec/fixtures', "#{table_name}.yml")
+        m.template 'fixtures.yml',  File.join('spec/fixtures', "#{table_name}.yml")
       end
 
       # Views
