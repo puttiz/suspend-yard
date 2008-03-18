@@ -1,18 +1,13 @@
 #  Table name: users
-#    :username          :string
-#    :nickname          :string
-#    :password_salt     :string
-#    :password_hash     :string
-#    :created_at        :datetime
-#    :updated_at        :datetime
-#    :last_login_at     :datetime
-#    :last_seen_at      :datetime
-#    :token             :string
-#    :token_expires_at  :datetime
-#    :admin             :boolean  :default => false
-#    :activated         :boolean  :default => false
-#    :email             :string
-#    :biography         :text
+      #t.string :username, :nickname
+      #t.string :password_salt, :password_hash, :limit => 40
+      #t.timestamps
+      #t.datetime :last_login_at, :last_seen_at
+      #t.string :token
+      #t.datetime :token_expires_at
+      #t.boolean :admin, :activated, :default => false
+      #t.string :email
+      #t.text :biography
 
 require 'digest/sha1'
 

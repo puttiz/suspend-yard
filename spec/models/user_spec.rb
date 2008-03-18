@@ -1,5 +1,17 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 
+module UserSpecHelper
+  def valid_user_attributes
+    { :username => 'mimosa',
+      :nickname => 'mimosa vivi',
+      :password => 'mimosapass',
+      :password_confirmation => 'mimosapass',
+      :email => 'mimosa@example.com',
+      :biography => 'A nurse with special habilities'
+    }
+  end
+end
+
 describe User, ":: First User" do
 
   include UserSpecHelper

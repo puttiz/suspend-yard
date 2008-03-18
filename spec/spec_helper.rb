@@ -62,17 +62,3 @@ class Hash
     self.reject { |k,v| !keys.include?(k || k.to_sym) }
   end
 end
-
-module UserSpecHelper
-
-  def valid_user_attributes
-    { :username => 'mimosa',
-      :nickname => 'mimosa vivi',
-      :password => 'mimosapass',
-      :password_confirmation => 'mimosapass',
-      :email => 'mimosa@example.com',
-      :biography => 'A nurse with special habilities'
-    }
-  end
-
-end

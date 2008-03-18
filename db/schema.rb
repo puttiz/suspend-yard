@@ -16,16 +16,16 @@ ActiveRecord::Schema.define(:version => 1) do
     t.string   "nickname"
     t.string   "password_salt",    :limit => 40
     t.string   "password_hash",    :limit => 40
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.string   "email"
+    t.text     "biography"
     t.datetime "last_login_at"
     t.datetime "last_seen_at"
     t.string   "token"
     t.datetime "token_expires_at"
     t.boolean  "admin",                          :default => false
     t.boolean  "activated",                      :default => false
-    t.string   "email"
-    t.text     "biography"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
 end
