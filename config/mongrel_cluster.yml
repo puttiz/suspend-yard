@@ -1,7 +1,7 @@
---- 
+---
 cwd: /home/puttiz/basil/flora/mimosa
 log_file: log/mongrel.log
-port: "81"
+port: "9000"
 environment: development
 address: localhost
 pid_file: tmp/pids/mongrel.pid
