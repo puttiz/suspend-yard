@@ -46,33 +46,13 @@ class SpecResourcefulGenerator < Rails::Generator::NamedBase
       m.directory(File.join('app/views', controller_class_path, controller_file_name))
       m.directory(File.join('spec/views', controller_class_path, controller_file_name))
 
-      # Model class, model spec, and fixtures.
-      m.template 'model.rb', File.join('app/models', class_path, "#{file_name}.rb")
-      m.template 'model_spec.rb', File.join('spec/models', class_path, "#{file_name}_spec.rb")
+      # Model
+      m.template('model.rb', File.join('app/models', class_path, "#{file_name}.rb"))
+      m.template('model_spec.rb', File.join('spec/models', class_path, "#{file_name}_spec.rb"))
 
       unless options[:skip_fixture]
-        m.template 'fixtures.yml',  File.join('spec/fixtures', "#{table_name}.yml")
+        m.template('fixtures.yml',  File.join('spec/fixtures', "#{table_name}.yml"))
       end
-
-      # Views
-      #%w{index show form}.each do |action|
-        #m.template "#{action}.html.haml", File.join('app', 'views', controller_class_path, controller_file_name, "#{action}.html.haml")
-        #m.template "#{action}.html.haml_spec.rb", File.join('spec', 'views', controller_class_path, controller_file_name, "#{action}.html.haml_spec.rb")
-      #end
-
-      # Helper
-      #m.template 'helper.rb', File.join('app', 'helpers', controller_class_path, "#{controller_file_name}_helper.rb")
-      #m.template 'helper_spec.rb', File.join('spec', 'helpers', controller_class_path, "#{controller_file_name}_helper_spec.rb")
-
-      # Controller
-      #m.template 'controller.rb', File.join('app', 'controllers', controller_class_path, "#{controller_file_name}_controller.rb")
-      #m.template 'controller_spec.rb', File.join('spec', 'controllers', controller_class_path, "#{controller_file_name}_controller_spec.rb")
-
-      # Lib
-      #m.template 'spec_helpers.rb', File.join('lib', 'spec_resourceful', 'spec_helpers.rb')
-
-      # Routing
-      #m.route_resources controller_file_name
 
       unless options[:skip_migration]
         m.migration_template(
@@ -84,6 +64,36 @@ class SpecResourcefulGenerator < Rails::Generator::NamedBase
           :migration_file_name => "create_#{file_path.gsub(/\//, '_').pluralize}"
         )
       end
+
+      # Controller
+      m.template('controller.rb', File.join('app/controllers', controller_class_path, "#{controller_file_name}_controller.rb"))
+      m.template 'controller_spec.rb', File.join('spec/controllers', controller_class_path, "#{controller_file_name}_controller_spec.rb")
+
+      # Views
+      # TODO
+      #for action in scaffold_views
+        #m.template(
+          #"view_#{action}.html.haml",
+          #File.join('app/views', controller_class_path, controller_file_name, "#{action}.html.haml")
+        #)
+      #end
+      #m.template('view_partial.html.haml', File.join('app/views', controller_class_path, controller_file_name, "_#{singular_name}.html.haml"))
+      #m.template("view_#{action}.html.haml_spec.rb", File.join('spec/views', controller_class_path, controller_file_name, "_#{singular_name}.html.haml_spec.haml"))
+
+
+
+      # Helper
+      #m.template 'helper.rb', File.join('app', 'helpers', controller_class_path, "#{controller_file_name}_helper.rb")
+      #m.template 'helper_spec.rb', File.join('spec', 'helpers', controller_class_path, "#{controller_file_name}_helper_spec.rb")
+
+      # Include
+      m.template 'spec_controllers.rb', File.join('spec', 'spec_controllers.rb')
+      m.template 'spec_helpers.rb', File.join('spec', 'spec_helpers.rb')
+
+      # Routing
+      #m.route_resources controller_file_name
+
+
     end
   end
 
@@ -101,6 +111,10 @@ protected
             "Don't generate a migration file for this model") { |v| options[:skip_migration] = v }
     opt.on("--skip-fixture",
             "Don't generation a fixture file for this model") { |v| options[:skip_fixture] = v}
+  end
+
+  def scaffold_views
+    %w[ index show new edit _form ]
   end
 
   def model_name
