@@ -37,6 +37,6 @@ class Hash
   end
 end
 
-%w{spec_helpers spec_controllers}.each do |f|
-  require File.join(File.dirname(__FILE__), f)
-end
+#%w{spec_helpers spec_controllers}.each do |f|
+  #require File.join(File.dirname(__FILE__), f)
+#end
