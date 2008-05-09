@@ -1,4 +1,4 @@
-class SpecResourcefulGenerator < Rails::Generator::NamedBase
+class ChicoryScaffoldGenerator < Rails::Generator::NamedBase
   default_options :skip_timestamps => false, :skip_migration => false, :skip_fixture => false
 
   attr_reader   :controller_name,
