@@ -11,7 +11,7 @@ namespace :spec do
   desc 'Generate HTML report for all specs '
   Spec::Rake::SpecTask.new('html') do |t|
     t.spec_files = FileList['spec/**/*_spec.rb']
-    t.spec_opts = ['--format', 'html:public/docs/report.html']
+    t.spec_opts = ['--format', 'html:public/report.html']
     t.fail_on_error = false
   end
 
