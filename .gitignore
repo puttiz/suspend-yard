@@ -1,8 +1,1 @@
-log
-tmp
-Capfile
-config/deploy.rb
-config/database.yml
-db/*.db
-vendor/rails
-vendor/*
+
